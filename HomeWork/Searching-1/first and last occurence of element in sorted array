@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int first(vector<int> &arr, int low, int high, int target)
+    {
+        int firstNo=-1;
+        while(low<=high)
+        {
+            int mid=low+(high-low)/2;
+            if(arr[mid]==target)
+            {
+              firstNo=mid;
+              high=mid-1;
+            }
+            else if(arr[mid]>target)
+             high=mid-1;
+            else
+             low=mid+1;  
+        }
+        return firstNo;
+    }
+    int second(vector<int> &arr, int low, int high, int target)
+    {
+        int secondNo=-1;
+        while(low<=high)
+        {
+            int mid=low+(high-low)/2;
+            if(arr[mid]==target)
+            {
+              secondNo=mid;
+              low=mid+1;
+            }
+            else if(arr[mid]>target)
+             high=mid-1;
+            else
+             low=mid+1;  
+        }
+        return secondNo;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) 
+    {
+       int firstNumber=first(nums,0,nums.size()-1,target); 
+       int secondNumber=second(nums,0, nums.size()-1,target);
+       return {firstNumber, secondNumber};
+    }
+};
