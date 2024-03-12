@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+bool check(int mid, vector<int> &arr, int s, int size)
+{
+   int j=0;
+   int subSum=0;
+   while(j<mid)
+   {
+       subSum+=arr[j];
+       j++;
+   }
+   int i=0;
+   while(j<size)
+   {
+       if(subSum>s)
+        return false;
+       subSum+=arr[j++];
+       subSum-=arr[i++];
+   }
+   return true;
+}
+int main()
+{
+    int n,s;
+    cout<<"Enter the number and limiter:";
+    cin>>n>>s;
+    vector<int> arr;
+    for(int i=0;i<n;i++)
+    {
+        int element;
+        cin>>element;
+        arr.push_back(element);
+    }
+    int low=1, high=n;
+    int ans=0;
+    while(low<=high)
+    {
+        int mid=low+(high-low)/2;
+        if(check(mid,arr,s,n))
+        {
+         ans=mid;
+         low=mid+1;
+        }
+        else
+         high=mid-1;
+    }
+    cout<<"Maximum Subarray size:"<<ans;
+    return 0;
+}
