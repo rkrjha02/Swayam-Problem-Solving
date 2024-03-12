@@ -1,0 +1,47 @@
+class Solution {
+public:
+    bool check(int mid, vector<int> &arr, int k, int m)
+    {
+       int count=0;
+       int bouquet=0;
+       for(int i=0;i<arr.size();i++)
+       {
+          if(arr[i]<=mid)
+            count++;
+          else if(arr[i]>mid)
+          {
+            bouquet+=(count/k);
+            count=0;
+          }  
+       }
+       bouquet+=(count/k);
+       if(bouquet>=m)
+        return true;
+       return false;
+    }
+    int minDays(vector<int>& bloomDay, int m, int k) 
+    {
+       long long total=m * 1LL * k * 1LL;
+       if(total>bloomDay.size())
+         return -1;
+    //    int low=*min_element(bloomDay.begin(), bloomDay.end());
+    //    int high=*max_element(bloomDay.begin(), bloomDay.end());
+       int low=INT_MAX, high=INT_MIN;
+       for(int i=0;i<bloomDay.size();i++)
+       {
+        low=min(low,bloomDay[i]);
+        high=max(high,bloomDay[i]);
+       }
+       while(low<=high)
+       {
+         int mid=low+(high-low)/2;
+         if(check(mid,bloomDay,k,m))
+         {
+          high=mid-1;
+         }
+         else
+          low=mid+1; 
+       }
+       return low;
+    }
+};
