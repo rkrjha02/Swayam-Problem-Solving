@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int h(TreeNode *root)
+    {
+        if(root==nullptr)
+         return 0;
+        int x= h(root->left);
+        int y=h(root->right);
+        return 1+max(x,y);
+    }
+    void presentLevel(TreeNode *root, int level, vector<int> &current)
+    {
+        if(root==nullptr)
+         return;
+        if(level==1)
+         current.push_back(root->val);
+        else
+        {
+            presentLevel(root->left, level-1,current);
+            presentLevel(root->right, level-1,current);
+        }  
+    }
+    void printLevel(vector<vector<int>> &v, TreeNode *root)
+    {
+        int height=h(root);
+        for(int level=1;level<=height;level++)
+        {
+            vector<int> current;
+            presentLevel(root,level,current);
+            v.push_back(current);
+        }
+    }
+    vector<vector<int>> levelOrder(TreeNode* root) 
+    {
+       vector<vector<int>> v;
+       if(root==nullptr)
+        return v;
+       printLevel(v,root);
+       return v;  
+    }
+};
