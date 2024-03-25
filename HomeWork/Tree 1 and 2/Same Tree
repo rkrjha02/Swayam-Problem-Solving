@@ -1,0 +1,16 @@
+bool check(TreeNode *tree1, TreeNode *tree2)
+    {
+        if(tree1==nullptr && tree2==nullptr)
+         return true;
+        if((tree1!=nullptr && tree2==nullptr) || (tree1==nullptr && tree2!=nullptr) || (tree1->val!=tree2->val))
+         return false;
+        if(!check(tree1->left,tree2->left))
+         return false;
+        if(!check(tree1->right,tree2->right))
+         return false;
+        return true;     
+    }
+    bool isSameTree(TreeNode* p, TreeNode* q) 
+    {
+       return check(p,q);
+    }
