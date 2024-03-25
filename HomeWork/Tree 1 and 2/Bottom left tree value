@@ -1,0 +1,31 @@
+int height(TreeNode *root)
+    {
+        if(root==nullptr)
+         return 0;
+        return 1+max(height(root->left),height(root->right)); 
+    }
+    void leftMostNode(TreeNode *root, int &answer, int &left, int level)
+    {
+        if(root==nullptr)
+         return;
+        if(left==1)
+         return; 
+        if(level==1)
+        {
+            answer=root->val;
+            left=1;
+        }
+        else if(level>1)
+        {
+            leftMostNode(root->left, answer, left, level-1);
+            leftMostNode(root->right, answer, left, level-1);
+        } 
+    }
+    int findBottomLeftValue(TreeNode* root) 
+    {
+        int h=height(root);
+        int ans=root->val;
+        int left=-1;
+        leftMostNode(root,ans,left,h);
+        return ans;
+    }
