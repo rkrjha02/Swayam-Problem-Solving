@@ -1,0 +1,20 @@
+class Solution{
+  public:
+    void preorder(Node *root, int &sum, int level)
+    {
+        if(root==nullptr)
+         return;
+        if(level%2==0)
+         sum-=root->data;
+        else
+         sum+=root->data;
+        preorder(root->left, sum, level+1);
+        preorder(root->right, sum, level+1);
+    }
+    int getLevelDiff(Node *root)
+    {
+       int sum=0;
+       preorder(root,sum,1);
+       return sum;
+    }
+};
