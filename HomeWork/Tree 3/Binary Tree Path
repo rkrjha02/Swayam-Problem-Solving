@@ -1,0 +1,20 @@
+void preorder(TreeNode *root, string str, vector<string> &ans)
+    {
+        if(root==nullptr)
+         return;
+        if(root->left==nullptr && root->right==nullptr)
+        {
+            str+=to_string(root->val);
+            ans.push_back(str);
+            return;
+        }
+        preorder(root->left, str+(to_string(root->val)+"->"), ans);
+        preorder(root->right, str+(to_string(root->val)+"->"), ans);
+    }
+    vector<string> binaryTreePaths(TreeNode* root) 
+    {
+       string str="";
+       vector<string> ans;
+       preorder(root,str,ans);
+       return ans;  
+    }
