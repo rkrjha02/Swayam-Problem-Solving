@@ -1,0 +1,21 @@
+void preorder(TreeNode *root, int key, vector<int> &answer)
+{
+    if(root==nullptr)
+     return;
+    if(root->val==key)
+    {
+        answer.push_back(root->val);
+        return;
+    } 
+    answer.push_back(root->val);
+    preorder(root->left,key, answer);
+    preorder(root->right,key,answer);
+    if(answer[answer.size()-1]!=key)
+     answer.pop_back();
+}
+vector<int> Solution::solve(TreeNode* A, int B) 
+{
+   vector<int> vect;
+   preorder(A,B,vect);
+   return vect;
+}
