@@ -1,0 +1,27 @@
+int height(BinaryTreeNode<int> * root)
+{
+    if(root==nullptr)
+     return 0;
+    return 1+max(height(root->left), height(root->right)); 
+}
+void preorder(BinaryTreeNode<int> *root, int heig, int level, vector<int> &answer, vector<bool> &check)
+{
+    if(root==nullptr)
+     return;
+    if (check[level] == false) {
+     answer.push_back(root->data);
+     check[level]=true;
+    }
+    preorder(root->left,heig, level+1, answer,check);
+    preorder(root->right, heig, level+1, answer, check);
+}
+vector<int> printLeftView(BinaryTreeNode<int>* root) 
+{
+      vector<int> answer;
+      if(root==nullptr)
+       return answer;
+      int h=height(root);
+      vector<bool> check(h+1,false);
+      preorder(root, h, 1, answer, check);
+      return answer;
+}
