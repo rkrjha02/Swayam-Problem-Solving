@@ -1,0 +1,31 @@
+class Solution
+{
+    public:
+    vector<int> topView(Node *root)
+    {
+        vector<int> answer;
+        if(root==nullptr)
+          return answer;
+        queue<pair<int,Node*>> q;
+        q.push({0,root});
+        map<int,int> mp;
+        while(!q.empty())
+        {
+            int vertical=q.front().first;
+            Node *node=q.front().second;
+            q.pop();
+            if(mp.find(vertical)==mp.end())
+             mp[vertical]=node->data;
+            if(node->left)
+             q.push({vertical-1, node->left});
+            if(node->right) 
+             q.push({vertical+1, node->right}); 
+        }
+        for(auto &it:mp)
+        {
+            answer.push_back(it.second);
+        }
+        return answer;
+    }
+
+};
