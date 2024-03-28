@@ -1,0 +1,15 @@
+class Solution {
+public:
+    long long findTarget(TreeNode *node, long long target)
+    {
+       if(node==nullptr)
+        return 0;
+       return (target==node->val)+findTarget(node->left, target-node->val)+findTarget(node->right, target-node->val);  
+    }
+    int pathSum(TreeNode* root, int targetSum) 
+    {
+       if(root==nullptr)
+        return 0;
+       return findTarget(root, targetSum)+ pathSum(root->left, targetSum)+pathSum(root->right, targetSum);  
+    }
+};
