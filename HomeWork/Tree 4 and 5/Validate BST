@@ -1,0 +1,30 @@
+class Solution {
+public:
+    void inorder(TreeNode *root, bool &ans, int &data, bool &firstNode)
+    {
+        if(root==nullptr)
+         return;
+        if(ans) 
+         inorder(root->left, ans, data, firstNode);
+        if(!firstNode || root->val>data)
+        {
+            data=root->val;
+            firstNode= true;
+        }
+        else if(root->val<=data)
+        {
+            ans=false;
+            return;
+        }
+        if(ans)
+         inorder(root->right, ans, data, firstNode); 
+    }
+    bool isValidBST(TreeNode* root) 
+    {
+       int data=INT_MIN;
+       bool ans=true;
+       bool firstNode = false;
+       inorder(root,ans,data,firstNode);
+       return ans;  
+    }
+};
