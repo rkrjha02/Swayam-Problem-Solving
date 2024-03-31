@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int preorder(TreeNode *root,int l,int h, int &sum)
+    {
+        if(root==nullptr)
+         return 0;
+        if(root)
+        {
+           if(root->val>=l && root->val<=h)
+            sum+=root->val;
+           preorder(root->left,l,h, sum);
+           preorder(root->right,l,h, sum); 
+        }
+        return sum;
+    }
+    int rangeSumBST(TreeNode* root, int low, int high) 
+    {
+       int sum=0;
+       return preorder(root,low,high,sum);
+    }
+};
