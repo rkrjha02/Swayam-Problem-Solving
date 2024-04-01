@@ -1,0 +1,25 @@
+class Solution {
+public:
+    TreeNode* bstFromPreorder(vector<int>& preorder) 
+    {
+       TreeNode *root=new TreeNode(preorder[0]);
+       stack<TreeNode*> s;
+       s.push(root);
+       for(int i=1;i<preorder.size();i++)
+       {
+         TreeNode *parent=s.top();
+         TreeNode *child=new TreeNode(preorder[i]);
+         while(!s.empty() && s.top()->val<child->val)
+         {
+            parent=s.top();
+            s.pop();
+         }
+         if(parent->val> child->val)
+          parent->left=child;
+         else
+          parent->right=child;
+         s.push(child);  
+       }  
+       return root;
+    }
+};
