@@ -1,0 +1,36 @@
+class Solution {
+public:
+    struct Tree{
+        bool isBst;
+        int max;
+        int min;
+        int sum;
+        Tree(bool isBst, int max, int min, int sum)
+        {
+           this->isBst=isBst;
+           this->max=max;
+           this->min=min;
+           this->sum=sum;
+        }
+    };
+    Tree maxSum(TreeNode *root, int &answer)
+    {
+       if(root==nullptr)
+        return Tree(true, INT_MIN, INT_MAX, 0);
+       Tree left=maxSum(root->left, answer);
+       Tree right=maxSum(root->right, answer);
+       if(!left.isBst || !right.isBst)
+         return Tree(false, INT_MIN, INT_MAX, 0);
+       if(root->val<=left.max || root->val>=right.min)
+        return Tree(false, max(left.max, right.min), min(left.max,right.min),0);
+       int sum=left.sum+right.sum+root->val;
+       answer=max(answer,sum);
+       return Tree(true, max(root->val, right.max), min(root->val, left.min), sum);
+    }
+    int maxSumBST(TreeNode* root) 
+    {
+        int answer=0;
+        maxSum(root, answer);
+        return answer;
+    }
+};
