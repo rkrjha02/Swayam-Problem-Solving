@@ -1,0 +1,24 @@
+class Solution {
+public:
+    TreeNode *constructBST(TreeNode *root, int low, int high, vector<int> &array)
+    {
+        if(low>high)
+         return nullptr;
+        int mid=low+(high-low)/2;
+        root=new TreeNode(array[mid]);
+        root->left=constructBST(root->left, low, mid-1, array);
+        root->right=constructBST(root->right, mid+1, high, array);
+        return root;
+    }
+    TreeNode* sortedListToBST(ListNode* head) 
+    {
+      if(head==nullptr)
+       return nullptr;
+      vector<int> array;
+      for(auto it=head;it!=nullptr;it=it->next)
+        array.push_back(it->val);
+      TreeNode *root=nullptr;
+      root=constructBST(root,0,array.size()-1,array);
+      return root;   
+    }
+};
