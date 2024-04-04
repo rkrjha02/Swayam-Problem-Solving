@@ -1,0 +1,27 @@
+void traversal(Node *root, Node * &head, Node *&prev)
+    {
+        if(root==nullptr)
+         return;
+        traversal(root->left, head, prev);
+        if(head==nullptr)
+         head=root;
+        else
+        {
+            root->left=prev;
+            prev->right=root;
+        }
+        prev=root;
+        traversal(root->right, head, prev);
+    }
+    Node *bTreeToCList(Node *root)
+    {
+       Node *prev=nullptr;
+       Node *head=nullptr;
+       traversal(root, head, prev);
+       if(prev!=nullptr)
+       {
+       prev->right=head;
+       head->left=prev;
+       }
+       return head;
+    }
