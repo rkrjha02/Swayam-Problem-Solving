@@ -1,0 +1,44 @@
+class Solution {
+public:
+    void leftBoundary(Node *root, vector<int> &answer)
+    {
+       if(root==nullptr || (root->left==nullptr && root->right==nullptr))
+        return;
+       answer.push_back(root->data);
+       if(root->left)
+        leftBoundary(root->left, answer);
+       else 
+        leftBoundary(root->right, answer);
+    }
+    void leafNodeTraversal(Node *root, vector<int> &answer)
+    {
+        if(root==nullptr)
+         return;
+        if(root->left==nullptr && root->right==nullptr)
+         answer.push_back(root->data);
+        leafNodeTraversal(root->left, answer);
+        leafNodeTraversal(root->right, answer);
+    }
+    void rightBoundary(Node *root, vector<int> &answer)
+    {
+        if(root==nullptr || (root->left==nullptr && root->right==nullptr))
+          return;
+        if(root->right)
+         rightBoundary(root->right, answer);
+        else 
+         rightBoundary(root->left, answer);
+        answer.push_back(root->data); 
+    }
+    vector <int> boundary(Node *root)
+    {
+      if(root==nullptr)
+       return {};
+      vector<int> answer;
+      answer.push_back(root->data);
+      leftBoundary(root->left,answer);
+      leafNodeTraversal(root->left,answer);
+      leafNodeTraversal(root->right,answer);
+      rightBoundary(root->right,answer);
+      return answer;
+    }
+};
