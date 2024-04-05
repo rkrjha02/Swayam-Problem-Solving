@@ -1,0 +1,43 @@
+class Solution {
+public:
+    TreeNode *first;
+    TreeNode *second;
+    TreeNode *prev;
+    TreeNode *middle;
+    void swapNodes(TreeNode *root)
+    {
+        if(root==nullptr)
+         return;
+        swapNodes(root->left);
+        if(prev!=nullptr && root->val<prev->val)
+        {
+            if(first==nullptr)
+            {
+             first=prev;
+             middle=root;
+            }
+            else
+              second=root;
+        }
+        prev=root;
+        swapNodes(root->right);
+    }
+    void recoverTree(TreeNode* root) 
+    {
+       first=nullptr, second=nullptr, middle=nullptr;
+       prev=new TreeNode(INT_MIN);
+       swapNodes(root); 
+       if(first && second)
+       {
+         int temp=first->val;
+         first->val=second->val;
+         second->val=temp;
+       }
+       else
+       {
+         int temp=first->val;
+         first->val=middle->val;
+         middle->val=temp;
+       } 
+    }
+};
