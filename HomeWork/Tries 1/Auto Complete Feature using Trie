@@ -1,0 +1,73 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+class TrieNode
+{
+public:
+    TrieNode *children[26];
+    bool isEnd;
+    vector<string> word;
+    TrieNode()
+    {
+        for (int i = 0; i < 26; i++)
+            children[i] = nullptr;
+        isEnd = false;
+    }
+};
+class trie
+{
+private:
+    TrieNode *root;
+
+public:
+    trie()
+    {
+        root = new TrieNode();
+    }
+    void insertIntoTrie(string name)
+    {
+        TrieNode *node = root;
+        for (int i = 0; i < name.length(); i++)
+        {
+            char ch = name[i];
+            if (node->children[ch - 'a'] == nullptr)
+                node->children[ch - 'a'] = new TrieNode();
+            node = node->children[ch - 'a'];
+            node->word.push_back(name);
+        }
+        node->isEnd = true;
+    }
+    void query()
+    {
+        TrieNode *node = root;
+        string ans = "Yes";
+        while (ans == "Yes")
+        {
+            char ch;
+            cout << "Enter the character:";
+            cin >> ch;
+            if (node->children[ch - 'a'] == nullptr)
+            {
+                cout << "No string Exist till now with the given character";
+                break;
+            }
+            node = node->children[ch - 'a'];
+            cout << "{";
+            for (auto naam : node->word)
+                cout << naam << ",";
+            cout << "}";
+            cout << "Want to continue(Yes or No):";
+            cin >> ans;
+        }
+    }
+};
+int main()
+{
+    vector<string> queries = {"hello", "rahul", "raj", "shruti", "shreya", "amit", "prakhar", "pramod", "amrinder"};
+    trie *root = new trie();
+    for (auto name : queries)
+        root->insertIntoTrie(name);
+    root->query();
+    return 0;
+}
