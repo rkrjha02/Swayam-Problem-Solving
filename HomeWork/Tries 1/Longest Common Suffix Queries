@@ -1,0 +1,64 @@
+class TrieNode{
+    public:
+    TrieNode *children[26];
+    int index;
+    int length;
+    TrieNode(){
+        for(int i=0;i<26;i++)
+            children[i]=nullptr;
+        index=INT_MAX;
+        length=INT_MAX;
+    }
+};
+class Trie{
+    private: TrieNode *root;
+    public:
+    Trie(){
+        root=new TrieNode();
+    }
+    void insert(string name, int ind, int len){
+        TrieNode *node=root;
+        for(int i=name.length()-1;i>=0;i--)
+        {
+            if(node->length>len){
+                node->length=len;
+                node->index=ind;
+            }
+            char ch=name[i];
+            if(node->children[ch-'a']==nullptr)
+                node->children[ch-'a']=new TrieNode();
+            node=node->children[ch-'a'];
+            if(node->length>len){
+                node->length=len;
+                node->index=ind;
+            }
+        }
+    }
+    int check(string query){
+        TrieNode *node=root;
+        for(int i=query.length()-1;i>=0;i--){
+            char ch=query[i];
+            if(node->children[ch-'a']==nullptr)
+                break;
+            node=node->children[ch-'a'];
+        }
+        return node->index;
+    }
+    
+};
+class Solution {
+public:
+    vector<int> stringIndices(vector<string>& wordsContainer, vector<string>& wordsQuery) 
+    {
+        Trie *root=new Trie();
+        int i=0;
+        for(auto word:wordsContainer){
+            root->insert(word,i,word.length());
+            i++;
+        }
+        vector<int> answer;
+        for(auto qry:wordsQuery)
+            answer.push_back(root->check(qry));
+        return answer;
+    }
+};
