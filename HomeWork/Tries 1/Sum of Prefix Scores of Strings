@@ -1,0 +1,53 @@
+class TrieNode{
+    public:
+    TrieNode *children[26];
+    int count;
+    TrieNode(){
+        for(int i=0;i<26;i++)
+            children[i]=nullptr;
+        count=0;
+    }
+};
+class Trie{
+    private: TrieNode *root;
+    public: 
+    Trie(){
+        root=new TrieNode();
+    }
+    
+    void insert(string word){
+        TrieNode *node=root;
+        for(int i=0; i<word.length(); i++){
+            char ch=word[i];
+            if(node->children[ch-'a']==nullptr)
+                node->children[ch-'a']=new TrieNode();
+            node=node->children[ch-'a'];
+            node->count++;
+        }
+    }
+    
+    int cost(string sabd){
+        TrieNode *node=root;
+        int totalCost=0;
+        for(int i=0;i<sabd.length();i++){
+            char ch=sabd[i];
+            node=node->children[ch-'a'];
+            totalCost+=node->count;
+        }
+        return totalCost;
+    }
+};
+class Solution {
+public:
+    vector<int> sumPrefixScores(vector<string>& words) {
+        Trie *root=new Trie();
+        for(int i=0;i<words.size();i++){
+            root->insert(words[i]);
+        }
+        vector<int> result;
+        for(int i=0;i<words.size();i++){
+            result.push_back(root->cost(words[i]));
+        }
+        return result;
+    }
+};
