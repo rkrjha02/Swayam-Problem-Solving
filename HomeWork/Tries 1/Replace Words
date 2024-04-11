@@ -1,0 +1,63 @@
+class TrieNode{
+    public:
+     TrieNode *children[26];
+     bool isEnd;
+     TrieNode(){
+        for(int i=0;i<26;i++)
+             children[i]=nullptr;
+        isEnd=false; 
+    }
+};
+
+class Trie{
+    private: TrieNode *root;
+    public:
+     Trie(){
+         root=new TrieNode();
+     }
+    
+    void insert(string word){
+        TrieNode *node=root;
+        for(int i=0;i<word.length();i++){
+            char ch=word[i];
+            if(node->children[ch-'a']==nullptr){
+                node->children[ch-'a']=new TrieNode();
+            }
+            node=node->children[ch-'a'];
+        }
+        node->isEnd=true;
+    }
+    
+    string check(string str){
+        TrieNode *node=root;
+        string ans="";
+        for(int i=0;i<str.length();i++){
+            char ch=str[i];
+            if(node->isEnd)
+                return ans;
+            else if(node->children[ch-'a']!=nullptr)
+                ans+=str[i];
+            else if(node->children[ch-'a']==nullptr && node->isEnd==false)
+                return str;
+            node=node->children[ch-'a'];
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    string replaceWords(vector<string>& dictionary, string sentence) {
+        Trie *root=new Trie();
+        for(int i=0;i<dictionary.size();i++){
+            root->insert(dictionary[i]);
+        }
+        string answer="";
+        istringstream ss(sentence);
+        string scan;
+        while(ss>>scan){
+            answer+=root->check(scan)+" ";
+        }
+        answer.pop_back();
+        return answer;
+    }
+};
