@@ -1,0 +1,63 @@
+class TrieNode{
+    public:
+     TrieNode *children[26];
+     vector<string> words;
+     TrieNode(){
+         for(int i=0;i<26;i++)
+          children[i]=nullptr;
+     }
+};
+class Trie{
+    private: TrieNode *root;
+    public:
+     Trie(){
+         root=new TrieNode();
+     }
+     
+     void insert(string str){
+         TrieNode *node=root;
+         for(int i=0;i<str.length();i++){
+             char ch=str[i];
+             if(node->children[ch-'a']==nullptr)
+              node->children[ch-'a']=new TrieNode();
+             node=node->children[ch-'a'];
+             node->words.push_back(str);
+         }
+     }
+     
+     void query(string s, vector<vector<string>> &result){
+         TrieNode *node=root;
+         for(int i=0;i<s.length();i++){
+             char ch=s[i];
+             if(node->children[ch-'a']==nullptr){
+              for(;i<s.length();i++){
+                  result.push_back({"0"});
+              }
+             }
+             else {
+              node=node->children[ch-'a'];
+              result.push_back(node->words);
+             }
+         }
+     }
+};
+class Solution{
+public:
+    vector<vector<string>> displayContacts(int n, string contact[], string s)
+    {
+        set<string> st;
+        for(int i=0;i<n;i++){
+           st.insert(contact[i]); 
+        }
+        vector<string> contacts;
+        for(auto it:st){
+            contacts.push_back(it);
+        }
+        Trie *root= new Trie();
+        for(int i=0;i<contacts.size();i++)
+         root->insert(contacts[i]);
+        vector<vector<string>> result;
+        root->query(s,result);
+        return result;
+    }
+};
