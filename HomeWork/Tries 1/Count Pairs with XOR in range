@@ -1,0 +1,70 @@
+class TrieNode{
+    public:
+    TrieNode *children[2];
+    int count;
+    TrieNode(){
+        for(int i=0;i<2;i++)
+             children[i]=nullptr;
+        count=0;
+    }
+};
+class Trie
+{
+   private: TrieNode *root;
+    public:
+     Trie()
+     {
+         root=new TrieNode();
+     }
+    
+    void insert(int num)
+    {
+        TrieNode *node=root;
+        for(int i=15;i>=0;i--)
+        {
+            int bit = (num>>i)& 1;
+            if(node->children[bit] == NULL)
+              node->children[bit] = new TrieNode();
+            node = node->children[bit];
+            node->count++;
+        }
+     }
+    
+    int xorK(int num,int k)
+     {
+        TrieNode *node=root;
+        int cnt = 0;
+        for(int i=15;i>=0;i--)
+        {
+            int bit_num = (num>>i)&1;
+            int bit_k = (k>>i)&1;
+            if(bit_k == 1)
+            {
+                if(node->children[bit_num] != NULL)
+                  cnt += node->children[bit_num]->count;
+                node = node->children[1-bit_num];  
+            }
+            else if(bit_k == 0)
+            {
+                node = node->children[bit_num];
+            }
+            if(node == NULL)break;
+        }
+        return cnt;
+     }
+};
+class Solution {
+public:
+    int countPairs(vector<int>& nums, int low, int high) {
+        Trie* root = new Trie();
+        int n = nums.size();
+        int ans = 0;
+        root->insert(nums[0]);
+        for(int i=1;i<n;i++)
+        {
+        ans += root->xorK(nums[i],high+1)-root->xorK(nums[i],low);
+        root->insert(nums[i]);
+        }  
+        return ans;
+    }
+};
