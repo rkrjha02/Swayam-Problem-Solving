@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void dfs(vector<int> adj[], int source, int parent, vector<vector<int>> &answer, vector<bool> &&check){
+        check[source]=true;
+        for(auto it:adj[source]){
+            if(check[it])
+                continue;
+            answer[it].push_back(parent);
+            dfs(adj,it,parent, answer, move(check));
+        }
+    }
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        vector<int> adj[n];
+        for(int i=0;i<edges.size();i++){
+            adj[edges[i][0]].push_back(edges[i][1]);
+        }
+        vector<vector<int>> answer(n);
+        vector<bool> check(n,false);
+        for(int i=0;i<n;i++){
+            dfs(adj,i,i, answer, vector<bool>(n));
+        }
+        return answer;
+    }
+};
