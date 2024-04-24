@@ -1,0 +1,35 @@
+class Solution{
+    public:
+        int minimumEdgeReversal(vector<vector<int>> &edges,int n,int src,int dst)
+        {
+            vector<pair<int,int>> adj[n+1];
+            for(int i=0;i<edges.size();i++){
+                adj[edges[i][0]].push_back({edges[i][1],0});
+                adj[edges[i][1]].push_back({edges[i][0],1});
+            }
+            vector<int> distance(n+1,INT_MAX);
+            distance[src]=0;
+            deque<pair<int,int>> pq;
+            pq.push_front({src,0});
+            while(!pq.empty()){
+                int node=pq.front().first;
+                int dist=pq.front().second;
+                pq.pop_front();
+                if(node==dst)
+                 return dist;
+                for(auto it:adj[node]){
+                    int adjNode=it.first;
+                    int edgeWeight=it.second;
+                    if(dist+edgeWeight<distance[adjNode]){
+                      distance[adjNode] = dist+edgeWeight;
+                      if(edgeWeight)
+                       pq.push_back({adjNode,distance[adjNode]});
+                      else
+                       pq.push_front({adjNode,distance[adjNode]});
+                       
+                    }
+                }
+            }
+            return -1;
+        }
+};
