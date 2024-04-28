@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int maxloot(vector<int> &houses, int start, int ind, vector<int> &dp)
+    {
+      if(ind<start)
+	   return 0;
+	  if(ind==start)
+	   return houses[ind]; 
+	  if(dp[ind]!=-1)
+	   return dp[ind]; 
+	  int nottake=0+maxloot(houses, start, ind-1, dp);
+	  int take=houses[ind]+maxloot(houses, start, ind-2, dp);
+	  return dp[ind]=max(take, nottake);
+    }
+int rob(vector<int>& valueInHouse) 
+    {
+      int n=valueInHouse.size();
+      if(n==1)
+       return valueInHouse[0];
+      else if(n==2)
+       return max(valueInHouse[0], valueInHouse[1]); 
+      vector<int> dp(n,-1);
+      int firstinc= maxloot(valueInHouse,0,n-2,dp); 
+      for(int i=0;i<n;i++)
+       dp[i]=-1;
+      int lastinc=maxloot(valueInHouse,1,n-1,dp);
+      return max(firstinc,lastinc);
+    }
+};
