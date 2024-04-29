@@ -1,0 +1,24 @@
+class Solution{
+public:
+    // MEMOISATION
+    // int maxsum(vector<vector<int>> &mat,int index, int size, vector<int> &dp){
+    //     if(index>=size)
+    //      return 0;
+    //     if(dp[index]!=-1)
+    //       return dp[index];
+    //     int notake=maxsum(mat,index+1,size,dp);
+    //     int take=max(mat[0][index],mat[1][index])+maxsum(mat,index+2,size,dp);
+    //     return dp[index]=max(take,notake); 
+    // }
+    int maxSum(int N, vector<vector<int>> mat){
+       vector<int> dp(N,0);
+       dp[N-1]=max(mat[0][N-1],mat[1][N-1]);
+       dp[N-2]=max(dp[N-1], max(mat[0][N-2], mat[1][N-2]));
+       for(int index=N-3;index>=0;index--){
+          int notake=dp[index+1];
+          int take=max(mat[0][index],mat[1][index])+dp[index+2];
+          dp[index]=max(take,notake); 
+       }
+       return dp[0];
+    }
+};
