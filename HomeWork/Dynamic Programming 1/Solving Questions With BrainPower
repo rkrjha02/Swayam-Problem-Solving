@@ -1,0 +1,17 @@
+class Solution {
+public:
+    long long maxPoints(vector<vector<int>> &questions, int index, int size, vector<long long> &dp){
+        if(index>=size)
+          return 0;
+        if(dp[index]!=-1)
+            return dp[index];
+        long long notake=maxPoints(questions,index+1,size,dp);
+        long long take=questions[index][0]+maxPoints(questions,index+questions[index][1]+1,size,dp);
+        return dp[index]=max(notake,take);
+    }
+    long long mostPoints(vector<vector<int>>& questions) {
+        int n=questions.size();
+        vector<long long> dp(n,-1);
+        return maxPoints(questions,0,n,dp);
+    }
+};
