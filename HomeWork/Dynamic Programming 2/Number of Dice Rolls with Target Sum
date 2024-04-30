@@ -1,0 +1,32 @@
+class Solution {
+public:
+    #define mod 1000000007
+    // MEMOISATION
+    // int totalWays(int dices, int k, int target, vector<vector<int>> &dp){
+    //     if(target<0) return 0;
+    //     if(dices==0) return target==0;
+    //     if(dp[dices][target]!=-1)
+    //         return dp[dices][target];
+    //     int ways=0;
+    //     for(int faces=1;faces<=k;faces++){
+    //         ways=(ways+totalWays(dices-1, k, target-faces,dp))%mod;
+    //     }
+    //     return dp[dices][target]=ways;
+    // }
+    
+    int numRollsToTarget(int n, int k, int target) {
+        vector<vector<int>> dp(n+1,vector<int>(target+1,0));
+        dp[0][0]=1;
+        for(int dices=1;dices<=n;dices++){
+            for(int tar=1;tar<=target;tar++){
+             int ways=0;
+             for(int faces=1;faces<=k;faces++){
+               if(tar>=faces)  
+                ways=(ways+dp[dices-1][tar-faces])%mod;
+             }
+             dp[dices][tar]=ways;
+            }
+        }
+        return dp[n][target];
+    }
+};
