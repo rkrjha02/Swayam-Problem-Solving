@@ -1,0 +1,35 @@
+class Solution {
+public:
+    // MEMOISATION
+    // int totalWays(string &s, int index, int size, vector<int> &dp){
+    //      if(index==size)
+    //          return 1;
+    //      if(index>size || s[index]=='0')
+    //          return 0;
+    //      if(dp[index]!=-1)
+    //          return dp[index];
+    //      int single=totalWays(s,index+1,size,dp);
+    //      int notsingle=0;
+    //      if((s[index]=='1') || ((index+1)< size && s[index]=='2' && (s[index+1]-'0'>=0 && s[index+1]-'0'<=6)))
+    //          notsingle=totalWays(s,index+2,size,dp);
+    //      return dp[index]=(single+notsingle);
+    // }
+    
+    // TABULATION
+    int numDecodings(string s) {
+        int n=s.length();
+        vector<int> dp(n+1,0);
+        dp[n]=1;
+        for(int index=n-1;index>=0;index--){
+            if(s[index]=='0')
+                continue;
+            int single=dp[index+1];
+            int notsingle=0;
+            if((s[index]=='1' && (index+1)<n) || ((index+1)< n && s[index]=='2' && (s[index+1]-'0'>=0 && s[index+1]-'0'<=6)))
+             notsingle=dp[index+2];
+            dp[index]=(single+notsingle);
+        }
+        return dp[0];
+    }
+    
+};
