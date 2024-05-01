@@ -1,0 +1,98 @@
+class Solution {
+public:
+    // MEMOISATION
+    #define mod 1000000007
+//     long long totalWays(string &s, int index, int size, vector<int> &dp){
+//          if(index==size)
+//              return 1;
+//          if(s[index]=='0')
+//              return 0;
+//          if(dp[index]!=-1)
+//              return dp[index];
+//          int single=1;
+//          long long answer=0;
+//          if(s[index]=='*')
+//              single=9;
+//          answer=answer+single*totalWays(s,index+1,size,dp);
+//          if(index+1<size){
+//              int notsingle=0;
+//              char nextCh=s[index+1];
+//              if(s[index]=='*'){
+//                  if(nextCh=='*'){
+//                      notsingle=15;
+//                  }
+//                  else{
+//                      if(nextCh<='6')
+//                          notsingle=2;
+//                      else
+//                          notsingle=1;
+//                  }
+//              }
+//              else if(s[index]<'3'){
+//                  if(nextCh=='*'){
+//                      if(s[index]=='1')
+//                          notsingle=9;
+//                      else
+//                          notsingle=6;
+//                  }
+//                  else{
+//                      if(stoi(s.substr(index,2))<=26)
+//                        notsingle=1;
+//                  }
+//              }
+             
+//              if(notsingle)
+//                  answer=answer+notsingle*totalWays(s,index+2,size,dp);
+//          }
+//          return dp[index]=answer%mod;
+         
+//     }
+    
+    int numDecodings(string s) {
+      int n=s.length();
+      vector<long long> dp(n+1,0);
+      dp[n]=1;
+      for(int index=n-1;index>=0;index--){
+          if(s[index]=='0')
+              continue;
+         int single=1;
+         long long answer=0;
+         if(s[index]=='*')
+             single=9;
+         answer=answer+single*dp[index+1];
+         if((index+1)<n){
+             int notsingle=0;
+             char nextCh=s[index+1];
+             if(s[index]=='*'){
+                 if(nextCh=='*'){
+                     notsingle=15;
+                 }
+                 else{
+                     if(nextCh<='6')
+                         notsingle=2;
+                     else
+                         notsingle=1;
+                 }
+             }
+             else if(s[index]<'3'){
+                 if(nextCh=='*'){
+                     if(s[index]=='1')
+                         notsingle=9;
+                     else
+                         notsingle=6;
+                 }
+                 else{
+                     if(stoi(s.substr(index,2))<=26)
+                       notsingle=1;
+                 }
+             }
+             
+             if(notsingle)
+                 answer=answer+notsingle*dp[index+2];
+         }
+         dp[index]=answer%mod;
+      } 
+     return dp[0];
+    }
+    
+};
