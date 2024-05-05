@@ -1,19 +1,39 @@
 class Solution {
 public:
+    // int calculateMinimumHP(vector<vector<int>>& dungeon) {
+    //     int n=dungeon.size();
+    //     int m=dungeon[0].size();
+    //     vector<vector<int>> dp(n+1, vector<int>(m+1,1e9));
+    //     //dp[i][j]=Minimum Health Required to reach Princess from current cellf
+    //     dp[n][m-1]=1;
+    //     dp[n-1][m]=1;
+    //     for(int i=n-1;i>=0;i--){
+    //         for(int j=m-1;j>=0;j--){
+    //            int right=dp[i][j+1];
+    //            int down=dp[i+1][j];
+    //            dp[i][j]=max(1,min(right,down)-dungeon[i][j]);
+    //         }
+    //     }
+    //     return dp[0][0];
+    // }
+    
+    // SPACE OPTIMISATION
     int calculateMinimumHP(vector<vector<int>>& dungeon) {
         int n=dungeon.size();
         int m=dungeon[0].size();
-        vector<vector<int>> dp(n+1, vector<int>(m+1,1e9));
-        //dp[i][j]=Minimum Health Required to reach Princess from current cellf
-        dp[n][m-1]=1;
-        dp[n-1][m]=1;
+        vector<int> curr(m+1,1e9);
+        vector<int> nextCurr(m+1,1e9);
+        //dp[i][j]=Minimum Health Required to reach Princess from current cell
+        nextCurr[m-1]=1;
+       // curr[m]=1;
         for(int i=n-1;i>=0;i--){
             for(int j=m-1;j>=0;j--){
-               int right=dp[i][j+1];
-               int down=dp[i+1][j];
-               dp[i][j]=max(1,min(right,down)-dungeon[i][j]);
+               int right=curr[j+1];
+               int down=nextCurr[j];
+               curr[j]=max(1,min(right,down)-dungeon[i][j]);
             }
+           nextCurr=curr;
         }
-        return dp[0][0];
+        return nextCurr[0];
     }
 };
