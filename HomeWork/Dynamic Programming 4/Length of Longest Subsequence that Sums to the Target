@@ -1,0 +1,37 @@
+class Solution {
+public:
+    
+    // MEMOISATION
+    // int longestSubsequence(vector<int> &nums, int target, int index, int n, vector<vector<int>> &dp){
+    //     if(target==0)
+    //         return 0;
+    //     if(index>=n)
+    //         return -1e9;
+    //     if(dp[index][target]!=-1)
+    //         return dp[index][target];
+    //     int notake=longestSubsequence(nums,target,index+1,n, dp);
+    //     int take=-1e9;
+    //     if(target>=nums[index])
+    //         take=1+longestSubsequence(nums,target-nums[index],index+1,n, dp);
+    //     return dp[index][target]=max(take,notake);
+    // }
+    
+    int lengthOfLongestSubsequence(vector<int>& nums, int target) {
+        int n=nums.size();
+        vector<vector<int>> dp(n+1,vector<int>(target+1,0));
+        for(int i=1;i<=target;i++)
+            dp[n][i]=-1e9;
+        for(int index=n-1;index>=0;index--){
+            for(int tar=0;tar<=target;tar++){
+              int notake=dp[index+1][tar];
+              int take=-1e9;
+              if(tar>=nums[index])
+                take=1+dp[index+1][tar-nums[index]];
+              dp[index][tar]=max(take,notake);
+            }
+        }
+        if(dp[0][target]<0)
+            return -1;
+        return dp[0][target];
+    }
+};
