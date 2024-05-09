@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int miniCost(vector<vector<int>> &moveCost, int row, int rowSize, int element, vector<vector<int>> &grid, int colSize, vector<vector<int>> &dp){
+        if(row==rowSize)
+            return 0;
+        if(dp[row][element]!=-1)
+            return dp[row][element];
+        int minCost=INT_MAX;
+        for(int i=0;i<colSize;i++){
+            minCost=min(minCost,moveCost[element][i]+ grid[row][i]+miniCost(moveCost,row+1, rowSize, grid[row][i], grid, colSize, dp));
+        }
+        return dp[row][element]=minCost;
+    }
+    
+    int minPathCost(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<int>> dp(n,vector<int>(m*n,-1));
+        int minCost=INT_MAX;
+        for(int i=0;i<m;i++){
+            minCost=min(minCost,grid[0][i]+miniCost(moveCost, 1, n, grid[0][i], grid, m, dp));
+        }
+        return minCost;
+    }
+};
