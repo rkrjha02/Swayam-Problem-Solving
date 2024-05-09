@@ -1,0 +1,51 @@
+class Solution {
+public:
+    
+    // MEMOISATION(TOP DOWN APPROACH)
+    
+    // int lcs(string &text1, string &text2, int index1, int index2, vector<vector<int>> &dp){
+    //     if(index1<0 || index2<0)
+    //         return 0;
+    //     if(dp[index1][index2]!=-1)
+    //         return dp[index1][index2];
+    //     if(text1[index1]==text2[index2])
+    //         return 1+lcs(text1,text2,index1-1,index2-1,dp);
+    //     return dp[index1][index2]=max(lcs(text1,text2, index1, index2-1,dp),lcs(text1,text2, index1-1, index2,dp));
+    // }
+    
+    // TABULATION(BOTTOM UP APPROACH)
+    
+    // int longestCommonSubsequence(string text1, string text2) {
+    //     int n=text1.length();
+    //     int m=text2.length();
+    //     vector<vector<int>> dp(n+1,vector<int>(m+1,0));
+    //     for(int index1=1;index1<=n;index1++){
+    //         for(int index2=1;index2<=m;index2++){
+    //              if(text1[index1-1]==text2[index2-1])
+    //                 dp[index1][index2]=1+dp[index1-1][index2-1];
+    //              else
+    //                 dp[index1][index2]=max(dp[index1][index2-1],dp[index1-1][index2]);
+    //         }
+    //     }
+    //     return dp[n][m];
+    // }
+    
+    //SPACE OPTIMISATION
+    
+    int longestCommonSubsequence(string text1, string text2) {
+        int n=text1.length();
+        int m=text2.length();
+        vector<int> prev(m+1,0);
+        vector<int> curr(m+1,0);
+        for(int index1=1;index1<=n;index1++){
+            for(int index2=1;index2<=m;index2++){
+                 if(text1[index1-1]==text2[index2-1])
+                    curr[index2]=1+prev[index2-1];
+                 else
+                    curr[index2]=max(curr[index2-1],prev[index2]);
+            }
+            prev=curr;
+        }
+        return prev[m];
+    }
+};
