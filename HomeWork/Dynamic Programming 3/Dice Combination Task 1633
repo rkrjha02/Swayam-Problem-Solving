@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+#define mod 1000000007
+
+using namespace std;
+
+// MEMOISATION(TOP DOWN APPROACH)
+// int diceCombinations(int sum, vector<int> &dp)
+// {
+//     if (sum == 0)
+//         return 1;
+//     if (dp[sum] != -1)
+//         return dp[sum];
+//     int numberWays = 0;
+//     for (int i = 1; i <= 6; i++)
+//     {
+//         if (sum >= i)
+//             numberWays = (numberWays % mod + diceCombinations(sum - i, dp) % mod) % mod;
+//     }
+//     return dp[sum] = (numberWays % mod);
+// }
+
+// TABULATION(BOTTOM UP APPROACH)
+int main()
+{
+    int n;
+    cin >> n;
+    vector<int> dp(n + 1, 0);
+    dp[0] = 1;
+    for (int sum = 1; sum <= n; sum++)
+    {
+        int numberWays = 0;
+        for (int i = 1; i <= 6; i++)
+        {
+            if (sum >= i)
+                numberWays = (numberWays + dp[sum - i]) % mod;
+        }
+        dp[sum] = (numberWays % mod);
+    }
+    cout << dp[n];
+    return 0;
+}
