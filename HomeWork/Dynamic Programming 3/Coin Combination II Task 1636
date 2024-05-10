@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+#define mod 1000000007
+
+using namespace std;
+
+// MEMOISATION(TOP DOWN APPROACH)
+// int totalWayCoins(int arr[], int size, int target, int index, vector<vector<int>> &dp)
+// {
+//     if (target == 0)
+//         return 1;
+//     if (index < 0)
+//         return 0;
+//     if (dp[index][target] != -1)
+//         return dp[index][target];
+//     int notake = totalWayCoins(arr, size, target, index - 1, dp);
+//     int take = 0;
+//     if (target >= arr[index])
+//         take = totalWayCoins(arr, size, target - arr[index], index, dp);
+//     return dp[index][target] = (take + notake) % mod;
+// }
+
+// TABULATION(BOTTOM UP APPROACH)
+// int main()
+// {
+//     int n, x;
+//     cin >> n >> x;
+//     int arr[n];
+//     for (int i = 0; i < n; i++)
+//         cin >> arr[i];
+//     vector<vector<int>> dp(n, vector<int>(x + 1, 0));
+//     for (int i = 0; i < n; i++)
+//         dp[i][0] = 1;
+//     for (int index = 0; index < n; index++)
+//     {
+//         for (int target = 1; target <= x; target++)
+//         {
+//             int notake = 0;
+//             if (index >= 1)
+//                 notake = dp[index - 1][target];
+//             int take = 0;
+//             if (target >= arr[index])
+//                 take = dp[index][target - arr[index]];
+//             dp[index][target] = (take + notake) % mod;
+//         }
+//     }
+//     cout << dp[n - 1][x];
+//     return 0;
+// }
+
+int main()
+{
+    int n, x;
+    cin >> n >> x;
+    int arr[n];
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+    vector<int> prev(x + 1, 0);
+    vector<int> curr(x + 1, 0);
+    prev[0] = 1;
+    curr[0] = 1;
+    for (int index = 0; index < n; index++)
+    {
+        for (int target = 1; target <= x; target++)
+        {
+            int notake = 0;
+            if (index >= 1)
+                notake = prev[target];
+            int take = 0;
+            if (target >= arr[index])
+                take = curr[target - arr[index]];
+            curr[target] = (take + notake) % mod;
+        }
+        prev = curr;
+    }
+    cout << prev[x];
+    return 0;
+}
