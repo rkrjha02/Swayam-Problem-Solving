@@ -1,0 +1,81 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// MEMOISATION(TOP DOWN APPROACH)
+// int MinimumCoin(int arr[], int totalCoins, int target, int index, vector<vector<int>> &dp)
+// {
+//     if (target == 0)
+//         return 0;
+//     if (index < 0)
+//         return 1e9;
+//     if (dp[index][target] != -1)
+//         return dp[index][target];
+//     int notake = MinimumCoin(arr, totalCoins, target, index - 1, dp);
+//     int take = 1e9;
+//     if (target >= arr[index])
+//         take = 1 + MinimumCoin(arr, totalCoins, target - arr[index], index, dp);
+//     return dp[index][target] = min(take, notake);
+// }
+
+// TABULATION(BOTTOM UP APPROACH)
+// int main()
+// {
+//     int n, x;
+//     cin >> n >> x;
+//     int arr[n];
+//     for (int i = 0; i < n; i++)
+//         cin >> arr[i];
+//     vector<vector<int>> dp(n, vector<int>(x + 1, 0));
+//     for (int index = 0; index < n; index++)
+//     {
+//         for (int target = 1; target <= x; target++)
+//         {
+//             int notake = 1e9;
+//             if (index >= 1)
+//                 notake = dp[index - 1][target];
+//             int take = 1e9;
+//             if (target >= arr[index])
+//                 take = 1 + dp[index][target - arr[index]];
+//             dp[index][target] = min(take, notake);
+//         }
+//     }
+//     int ans = dp[n - 1][x];
+//     if (ans >= 1e9)
+//         cout << "-1";
+//     else
+//         cout << ans;
+//     return 0;
+// }
+
+// SPACE OPTIMISED
+int main()
+{
+    int n, x;
+    cin >> n >> x;
+    int arr[n];
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+    vector<int> prev(x + 1, 0);
+    vector<int> curr(x + 1, 0);
+    for (int index = 0; index < n; index++)
+    {
+        for (int target = 1; target <= x; target++)
+        {
+            int notake = 1e9;
+            if (index >= 1)
+                notake = prev[target];
+            int take = 1e9;
+            if (target >= arr[index])
+                take = 1 + curr[target - arr[index]];
+            curr[target] = min(take, notake);
+        }
+        prev = curr;
+    }
+    int ans = prev[x];
+    if (ans >= 1e9)
+        cout << "-1";
+    else
+        cout << ans;
+    return 0;
+}
