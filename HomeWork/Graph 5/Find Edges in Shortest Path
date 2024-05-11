@@ -1,0 +1,72 @@
+class Solution {
+public:
+    vector<int> dijkstra(unordered_map<int, vector<pair<long long, long long>>>& adj, int src, int n){
+        
+        vector<int> dist(n, INT_MAX);
+        vector<bool> visited(n,false);
+        
+        priority_queue<pair<long long,long long>, vector<pair<long long,long long>>, greater<pair<long long,long long>>> pq;
+        dist[src]=0;
+        
+        pq.push({0,src});
+        
+        while(!pq.empty()){
+            
+            long long distance=pq.top().first;
+            int node=pq.top().second;
+            pq.pop();
+            
+            if(visited[node]) continue;
+            
+            for(auto it:adj[node]){
+                long long adjWeight=it.second;
+                int adjNode=it.first;
+                
+                if(dist[adjNode]>distance+adjWeight){
+                    dist[adjNode]=distance+adjWeight;
+                    pq.push({dist[adjNode], adjNode});
+                }
+            }
+            
+            visited[node]=true;
+        }
+        return dist;
+    }
+    
+    vector<bool> findAnswer(int n, vector<vector<int>>& edges) {
+         unordered_map<int, vector<pair<long long, long long>>> adj;
+         for(auto& edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            int w = edge[2];
+            
+            adj[u].push_back({v, w});
+            adj[v].push_back({u, w});
+         }
+        
+        vector<int> distSrc=dijkstra(adj,0, n);
+        vector<int> distDis=dijkstra(adj,n-1,n);
+        
+        vector<bool> result(edges.size(),false);
+        
+        for(int i=0;i<edges.size();i++){
+            int firstNode=edges[i][0];
+            int secondNode=edges[i][1];
+            int weight=edges[i][2];
+            
+            long long distanceFromSource=distSrc[firstNode];
+            long long distanceFromDestination=distDis[secondNode];
+            
+            if(distanceFromSource+distanceFromDestination+weight==distSrc[n-1])
+                result[i]=true;
+            
+            distanceFromSource=distSrc[secondNode];
+            distanceFromDestination=distDis[firstNode];
+            
+            if(distanceFromSource+distanceFromDestination+weight==distSrc[n-1])
+                result[i]=true;
+        }
+        
+        return result;
+    }
+};
