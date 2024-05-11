@@ -1,0 +1,49 @@
+class Solution {
+public:
+    
+     bool bfs(vector<vector<int>>& graph, int i,vector<bool>& visited,vector<int>& colours){
+        queue<int> q;
+
+        q.push(i);
+
+        colours[i] = 1;
+        visited[i] = true;
+
+        while(!q.empty()){
+            int current = q.front();
+            q.pop();
+            
+            for(auto neighbour:graph[current]){
+                if(colours[neighbour] != -1){
+                    if(colours[current] == colours[neighbour]){
+                     return false;
+                    }
+                }
+                else{
+                    visited[neighbour] = true;
+                    colours[neighbour] = 1- colours[current];
+                    q.push(neighbour);
+                }
+            }
+            
+        }
+
+        return true;
+
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n = graph.size();
+
+        vector<bool> visited(n,false);
+        vector<int> colours(n,-1);
+
+        for(int i=0;i<n;i++){
+            if(!visited[i]){ 
+             if(!bfs(graph,i,visited,colours))
+              return false;
+            } 
+        }
+
+        return true;
+    }
+};
