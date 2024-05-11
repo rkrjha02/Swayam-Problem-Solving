@@ -1,0 +1,59 @@
+ void dfs(int i,vector<bool>& visi,vector<vector<int>>& adj,stack<int>& dfs_order){
+        
+        visi[i] = true;
+        
+        for(auto neighbour:adj[i]){
+            if(!visi[neighbour])
+               dfs(neighbour,visi,adj,dfs_order);
+        }
+        
+        dfs_order.push(i);
+        
+    }
+    
+   void dfs_reverse(int i,vector<bool>& visi,vector<vector<int>>& adja_list){
+        
+        visi[i] = true;
+        
+        for(auto neighbour:adja_list[i]){
+            if(!visi[neighbour])
+              dfs_reverse(neighbour,visi,adja_list);
+        }
+    }
+    
+    
+    
+    int kosaraju(int v, vector<vector<int>>& adj)
+    {
+        //code here
+        
+        stack<int> dfs_order;
+        vector<bool> visi(v,false);
+        
+        for(int i=0;i<v;i++){
+            if(!visi[i])
+              dfs(i,visi,adj,dfs_order);
+        }
+        
+        vector<vector<int>> adja_list(v);
+        
+        for(int i=0;i<v;i++){
+           for(auto j:adj[i]){
+               adja_list[j].push_back(i);
+           }
+        }
+        
+        for(int i=0;i<v;i++)visi[i] = false;
+        int no_of_scc = 0;
+        
+        for(int i=0;i<v;i++){
+            int vert = dfs_order.top();
+            dfs_order.pop();
+            if(!visi[vert]){
+              dfs_reverse(vert,visi,adja_list);
+              no_of_scc++;
+            }  
+        }
+        
+        return no_of_scc;
+}
