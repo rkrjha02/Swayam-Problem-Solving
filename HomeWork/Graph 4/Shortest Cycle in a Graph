@@ -1,0 +1,56 @@
+class Solution {
+public:
+    
+     void bfs(int i,vector<int>& parent,vector<int>& level,vector<int> adjList[],vector<bool>& visited,int& mini){
+         queue<int> q;
+         q.push(i);
+
+         visited[i] = true;
+
+         while(!q.empty()){
+             int currNode = q.front();
+              q.pop();
+
+              for(auto neighbour:adjList[currNode]) {
+                 if(visited[neighbour] == true){
+                     if(parent[currNode] == neighbour)
+                      continue;
+                      mini = min(level[neighbour] + level[currNode] + 1,mini); 
+                  }
+                 else{
+                     level[neighbour] = level[currNode] + 1;
+                     parent[neighbour] = currNode;
+
+                     visited[neighbour] = true;
+                     q.push(neighbour);
+                     
+                 }
+              }
+         } 
+
+     }
+    
+    int findShortestCycle(int n, vector<vector<int>>& edges) {
+        
+         vector<int> adjList[n];
+
+         for(auto it:edges){
+            adjList[it[0]].push_back(it[1]);
+            adjList[it[1]].push_back(it[0]);
+         }
+
+         int mini = n+1;
+
+         for(int i=0;i<n;i++){
+             vector<bool> visited(n,false);
+             vector<int> parent(n,n+1);
+             vector<int> level(n,0);
+             bfs(i,parent,level,adjList,visited,mini);
+         }
+
+         if (mini == n+1)
+           return -1;
+         return mini;
+
+    }
+};
