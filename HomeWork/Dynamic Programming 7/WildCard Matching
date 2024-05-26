@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool matchOrNot(string &mainString, string &pattern, int indexString, int indexPattern, vector<vector<int>> &dp){
+        if(indexString<0 && indexPattern<0)
+             return true;
+        if(indexPattern<0 && indexString>=0)
+            return false;
+        if(indexString<0 && indexPattern>=0){
+            for(int i=indexPattern;i>=0;i--){
+                if(pattern[i]!='*')
+                    return false;
+            }
+            return true;
+        }
+        if(dp[indexString][indexPattern]!=-1)
+            return dp[indexString][indexPattern];
+        if(pattern[indexPattern]=='?' || (mainString[indexString]==pattern[indexPattern]))
+            return dp[indexString][indexPattern]=matchOrNot(mainString, pattern, indexString-1, indexPattern-1, dp);
+        if(pattern[indexPattern]=='*'){
+            bool emptyString=matchOrNot(mainString, pattern, indexString, indexPattern-1, dp);
+            bool notEmpty=matchOrNot(mainString, pattern, indexString-1, indexPattern,dp);
+            return dp[indexString][indexPattern]=(emptyString||notEmpty);
+        }
+        return false;
+    }
+    
+    bool isMatch(string s, string p){
+        int n=s.length();
+        int m=p.length();
+        vector<vector<int>> dp(n,vector<int>(m,-1));
+        return matchOrNot(s,p, n-1,m-1, dp);
+    }
+};
