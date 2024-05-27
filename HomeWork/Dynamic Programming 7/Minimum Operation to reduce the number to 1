@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int minDays(int n, unordered_map<int,int> &dp){
+  if(n<=1)
+    return 0;
+  if(dp.find(n)!=dp.end())  return dp[n];    
+  int two=1+(n%2)+minDays(n/2, dp);
+  int three=1+(n%3)+minDays(n/3, dp);
+  return dp[n]=min(two,three);
+}
+
+int main() {
+    int n;
+    cout<<"Enter the number:";
+    cin>>n;
+    unordered_map<int,int> dp;
+    cout<<minDays(n,dp);
+    return 0;
+}
