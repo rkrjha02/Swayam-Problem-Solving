@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+unordered_map<string, int> memo;
+int maxProfit(vector<int> &nums, int low, int high, int year)
+{
+    if (low > high)
+        return 0;
+    string key = to_string(low) + "," + to_string(high) + "," + to_string(year);
+    if (memo.find(key) != memo.end())
+        return memo[key];
+    int begin = year * nums[low] + maxProfit(nums, low + 1, high, year + 1);
+    int end = year * nums[high] + maxProfit(nums, low, high - 1, year + 1);
+    memo[key] = max(begin, end);
+    return memo[key];
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the number of elements in array:";
+    cin >> n;
+    vector<int> arr;
+    for (int i = 0; i < n; i++)
+    {
+        int x;
+        cin >> x;
+        arr.push_back(x);
+    }
+    cout << maxProfit(arr, 0, n - 1, 1);
+    return 0;
+}
